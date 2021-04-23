@@ -7,10 +7,10 @@ const booksController = require('../controllers/books_controller')
 
 router.get('/', booksController.index)
 router.get('/:book_id', booksController.show)
-router.get('/author/1', booksController.BooksByAuthor)
+router.get('/author/:author_id', booksController.BooksByAuthor)
 router.get('/search', booksController.search)
 router.post('/', booksController.store)
-router.patch('/1', booksController.update)
-router.delete('/1', booksController.delete)
+router.patch('/:book_id', booksController.update)
+router.delete('/:book_id', booksController.delete)
 
 module.exports = router
