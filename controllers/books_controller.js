@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator')
 
 let DUMMY_DB = [
     {
@@ -81,15 +82,53 @@ const search =(req, res) => {
 }
 
 const store = (req, res) =>{
-    res.status(201).json({ message : "You can create a new books from this endpoint"})
+
+    // const id = req.body.id
+    // const title = req.body.title
+    // const description = req.body.description
+    // const author = req.body.author
+    // const category = req.body.category
+
+    const {id, title, description, author, category} = req.body  // left side is called object destructuring
+
+    const newBook = {
+        title,
+        id,
+        description,
+        author,
+        category ,
+    }
+
+    DUMMY_DB.push(newBook)
+
+    res.status(201).json({ book : newBook})
 }
 
 const update = (req, res)=>{
 
     let book_id = req.params.book_id
 
+    // get data
 
-    res.status(200).json({ message : `You can update a book from this endpoint ${book_id}`})
+    const {id, title, description, author, category} = req.body
+
+    const errors = validationResult(req)
+
+    if(!errors.isEmpty()){
+        return res.json({errors})
+    }
+
+    const book = DUMMY_DB.find( b => b.id === book_id)
+
+    book.title = title
+    book.description = description
+    book.category = category
+
+    const bookIndex = DUMMY_DB.findIndex( b => b.id === book_id)
+
+    DUMMY_DB[bookIndex] = book
+
+    res.status(200).json({ message : "Book updated successfully!"})
 
 }
 
