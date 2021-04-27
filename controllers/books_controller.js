@@ -1,5 +1,8 @@
 const { validationResult } = require('express-validator')
 
+const Book = require('../models/book');
+const Author = require('../models/author')
+
 let DUMMY_DB = [
     {
         id:'b1',
@@ -41,10 +44,21 @@ let DUMMY_DB = [
 
 //an Arrow function
 
-const index = (req, res)=>{
+const index = async (req, res)=>{
+
+    let books
+
+    try{
+        books = await Book.find()
+
+    }catch(e){
+        return res.status(417).json({msg: e })
+    }
+
+
     return res
             .status(200)
-            .json({ books : DUMMY_DB})
+            .json({ books})
 
 }
 
@@ -117,27 +131,48 @@ const search =(req, res) => {
     res.status(200).json({ books })
 }
 
-const store = (req, res) =>{
+const store = async (req, res) =>{
 
-    // const id = req.body.id
-    // const title = req.body.title
-    // const description = req.body.description
-    // const author = req.body.author
-    // const category = req.body.category
+    // 1. Receive body params from request.
+    const {id, title, description, author_id, category} = req.body  // left side is called object destructuring
 
-    const {id, title, description, author, category} = req.body  // left side is called object destructuring
+    // 2. Check if the author is a valid author.
 
-    const newBook = {
-        title,
-        id,
-        description,
-        author,
-        category ,
+    let author;
+
+    try{
+        author = await Author.findById(author_id)
+    }catch (e){
+        return res.status(500).json({message: "Please check the author_id. "})
     }
 
-    DUMMY_DB.push(newBook)
 
-    res.status(201).json({ book : newBook})
+
+
+
+    // 3. Create an object for the new book
+    const newBook = new Book({
+        title,
+        description,
+        author_id,
+        category ,
+    })
+
+    // 4. Saving the book using the model
+
+    try{
+        await newBook.save()
+        author.books.push(newBook)
+        await author.save()
+    }catch (e){
+        return res.status(500).json({message: e.toString()})
+
+    }
+
+
+    // 5. Sending a valid response
+
+    return res.status(201).json({ book: newBook})
 }
 
 const update = (req, res)=>{
