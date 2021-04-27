@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2efb6075-1844-4c72-b37e-c6cd820a3d33" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/books_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/books_controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
@@ -40,7 +41,8 @@
       <workItem from="1619044582680" duration="6657000" />
       <workItem from="1619098452416" duration="41000" />
       <workItem from="1619130118225" duration="7070000" />
-      <workItem from="1619215737004" duration="6392000" />
+      <workItem from="1619215737004" duration="7484000" />
+      <workItem from="1619475744609" duration="5775000" />
     </task>
     <servers />
   </component>
@@ -48,6 +50,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="389" y="261" width="587" height="534" key="find.popup" timestamp="1619477557865">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="389" y="261" width="587" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1619477557865" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1619048725716">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

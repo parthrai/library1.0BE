@@ -7,9 +7,9 @@ const booksController = require('../controllers/books_controller')
 // Define all the routes related to book entity
 
 router.get('/', booksController.index)
+router.get('/search', booksController.search)
 router.get('/:book_id', booksController.show)
 router.get('/author/:author_id', booksController.BooksByAuthor)
-router.get('/search', booksController.search)
 router.post('/',
     [
         check('title', 'Please enter a valid value for title').not().isEmpty(),

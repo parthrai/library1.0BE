@@ -9,8 +9,8 @@ let DUMMY_DB = [
         category: 'horror'
     },
     {
-        id:'b2',
-        title:'Title for book 2',
+        id:'b2 programming',
+        title:'this is book2',
         description: 'some fancy description for book2',
         author: 'a1',
         category: 'cooking'
@@ -18,21 +18,21 @@ let DUMMY_DB = [
     },
     {
         id:'b3',
-        title:'Title for book 3',
+        title:'some fancy book',
         description: 'some fancy description for book3',
         author: 'a1',
         category: 'horror'
     },
     {
         id:'b4',
-        title:'Title for book 4',
+        title:'book related to programming',
         description: 'some fancy description for book4',
         author: 'a2',
         category: 'fantasy'
     },
     {
         id:'b5',
-        title:'Title for book 5',
+        title:'cooking book',
         description: 'some fancy description for book5',
         author: 'a3',
         category: 'fantasy'
@@ -56,7 +56,7 @@ const show =(req, res) => {
 
     if(!book){
 
-        return res.status(404).json({message: "Book not found"})
+        return res.status(404).json({message: "Bossok not found"})
     }
 
     res.status(200).json({ book })
@@ -78,7 +78,43 @@ const booksByAuthor = (req, res) => {
 }
 
 const search =(req, res) => {
-    res.json({ message : "You can perform search from this endpoint"})
+
+    const searchQuery = req.query.searchQuery
+    const field = req.query.field
+    let books;
+
+    if(!field){
+        books = DUMMY_DB.filter( b=>
+            b.title.includes(searchQuery)
+            || b.description.includes(searchQuery)
+            || b.category.includes(searchQuery)
+        )
+
+    }
+
+    if(field == 'title'){
+         books = DUMMY_DB.filter( b =>
+            b.title.includes(searchQuery)
+        )
+    }
+
+    if( field == 'description'){
+         books = DUMMY_DB.filter( b =>
+            b.description.includes(searchQuery)
+        )
+    }
+
+    if( field == 'category'){
+        books = DUMMY_DB.filter( b =>
+            b.category.includes(searchQuery)
+        )
+    }
+
+    if(!books){
+        return res.status(404).json({message: "Books not found"})
+    }
+
+    res.status(200).json({ books })
 }
 
 const store = (req, res) =>{
