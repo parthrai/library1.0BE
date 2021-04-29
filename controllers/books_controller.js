@@ -62,11 +62,18 @@ const index = async (req, res)=>{
 
 }
 
-const show =(req, res) => {
+const show = async (req, res) => {
 
     let book_id = req.params.book_id
 
-    const book = DUMMY_DB.find( b => b.id === book_id )
+    let book ;
+
+    try{
+         book = await Book.findById(book_id)
+    }catch (e){
+        return res.status(500).json({message: "Please check the book_id. "})
+
+    }
 
     if(!book){
 
@@ -76,18 +83,25 @@ const show =(req, res) => {
     res.status(200).json({ book })
 }
 
-const booksByAuthor = (req, res) => {
+const booksByAuthor = async (req, res) => {
 
     let author_id = req.params.author_id
 
-    const book = DUMMY_DB.filter( b => b.author === author_id)
+    let books;
 
-    if(!book){
-        return res.status(404).json({message: "Book not found"})
+    try{
+        books = await Book.find({ author_id });
+    }catch (e){
+        return res.status(500).json({message: "Please check the author_id. "})
 
     }
 
-    res.status(200).json({ book })
+    if(!books){
+        return res.status(404).json({message: "Books not found"})
+
+    }
+
+    res.status(200).json({ books })
 
 }
 
@@ -175,7 +189,7 @@ const store = async (req, res) =>{
     return res.status(201).json({ book: newBook})
 }
 
-const update = (req, res)=>{
+const update = async (req, res)=>{
 
     let book_id = req.params.book_id
 
@@ -189,25 +203,56 @@ const update = (req, res)=>{
         return res.json({errors})
     }
 
-    const book = DUMMY_DB.find( b => b.id === book_id)
+    let book;
+
+    try{
+        book = await Book.findById(book_id)
+    }catch (e){
+        return res.status(500).json({message:'Please check the book_id'})
+    }
 
     book.title = title
     book.description = description
     book.category = category
 
-    const bookIndex = DUMMY_DB.findIndex( b => b.id === book_id)
+    try{
+        await book.save()
+    }catch(e){
+        return res.status(417).json({message:'Whoops, unable to save the book.'})
+    }
 
-    DUMMY_DB[bookIndex] = book
 
     res.status(200).json({ message : "Book updated successfully!"})
 
 }
 
-const deleteBook = (req, res)=>{
+const deleteBook = async (req, res)=>{
 
     let book_id = req.params.book_id //b1
 
-    DUMMY_DB = DUMMY_DB.filter( b => b.id !== book_id)
+    let book;
+
+    try{
+        book = await Book.findById(book_id)
+    }catch(e){
+        return  res.status(404).json({ message : `Book not found`})
+
+    }
+
+
+
+    let author = await Author.findById(book.author_id)
+
+
+    try{
+        await author.books.pull(book)
+        author.save()
+        await book.remove()
+
+    }catch(e){
+        return  res.status(417).json({ message : e.toString()})
+
+    }
 
     res.status(200).json({ message : `Book deleted successfully`})
 
