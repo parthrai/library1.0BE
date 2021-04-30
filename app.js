@@ -6,11 +6,13 @@ const app = express()
 const port = 9000
 
 const bookRoutes = require('./routes/book')
+const authorRoutes = require('./routes/author')
 
 
 app.use(bodyParser.json())
 
 app.use('/api/books',bookRoutes)
+app.use('/api/authors', authorRoutes)
 
 
 
