@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 const app = express()
-const port = 9000
+const port = process.env.PORT || 9000
 
 const bookRoutes = require('./routes/book')
 const authorRoutes = require('./routes/author')
